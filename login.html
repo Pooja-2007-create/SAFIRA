@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safira - Login</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #b57edc; /* Lilac theme */
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: #fff;
+      width: 430px;
+      padding: 2.2rem 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      overflow-y: auto;
+      max-height: 95vh;
+    }
+
+    h1 {
+      text-align: center;
+      color: #a46cd6;
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      text-align: center;
+      color: #4a2e65;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin: 0.8rem 0 0.3rem;
+      font-weight: 600;
+      color: #4a2e65;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1.5px solid #c5a5e3;
+      border-radius: 8px;
+      outline: none;
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #a46cd6;
+      box-shadow: 0 0 5px rgba(164, 108, 214, 0.5);
+    }
+
+    .section-title {
+      font-family: 'Poppins', sans-serif;
+      color: #a46cd6;
+      margin-top: 1.8rem;
+      font-size: 1.2rem;
+      border-left: 5px solid #b57edc;
+      padding-left: 10px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      margin-top: 1.5rem;
+      background-color: #a46cd6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #945cc4;
+      transform: scale(1.05);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #4a2e65;
+      font-size: 0.9rem;
+    }
+
+    .footer a {
+      color: #a46cd6;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #a46cd6;
+      border-radius: 10px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Safira Login</h1>
+    <p>Welcome back! Please enter your details to continue 💜</p>
+
+    <form onsubmit="return validateAge()">
+      <h3 class="section-title">👩 User Information</h3>
+      <label for="appId">App ID</label>
+      <input type="text" id="appId" name="appId" placeholder="Enter your Safira App ID" required />
+
+      <label for="email">Email ID</label>
+      <input type="email" id="email" name="email" placeholder="Enter your Email" required />
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your Phone Number" pattern="[0-9]{10}" required />
+
+      <label for="age">Age</label>
+      <input type="number" id="age" name="age" placeholder="Enter your Age" min="1" required />
+
+      <h3 class="section-title">👨‍👩‍👧 Parent Details</h3>
+      <label for="parentPhone">Parent’s Phone Number</label>
+      <input type="tel" id="parentPhone" name="parentPhone" placeholder="Enter Parent’s Phone Number" pattern="[0-9]{10}" required />
+
+      <label for="parentEmail">Parent’s Email ID</label>
+      <input type="email" id="parentEmail" name="parentEmail" placeholder="Enter Parent’s Email ID" required />
+
+      <h3 class="section-title">🧑‍🏫 Guardian Details</h3>
+      <label for="guardianPhone">Guardian’s Phone Number</label>
+      <input type="tel" id="guardianPhone" name="guardianPhone" placeholder="Enter Guardian’s Phone Number" pattern="[0-9]{10}" required />
+
+      <label for="guardianEmail">Guardian’s Email ID</label>
+      <input type="email" id="guardianEmail" name="guardianEmail" placeholder="Enter Guardian’s Email ID" required />
+
+      <button type="submit" class="submit-btn">Login</button>
+    </form>
+
+    <div class="footer">
+      <p>By logging in, you agree to our <a href="terms.html">Terms & Conditions</a>.</p>
+    </div>
+  </div>
+
+  <script>
+    function validateAge() {
+      const age = parseInt(document.getElementById("age").value);
+      if (age < 13) {
+        alert("⚠ Access Denied! You must be at least 13 years old to use Safira.");
+        return false;
+      } else {
+        alert("✅ Welcome to Safira! Login successful.");
+        return true;
+      }
+    }
+  </script>
+</body>
+</html>

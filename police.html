@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tamil Nadu Police Station Locator</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #E6CCFF;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #CBA0FF;
+      text-align: center;
+      padding: 20px;
+      color: white;
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #6A0DAD;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #CBA0FF;
+      margin-bottom: 20px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #CBA0FF;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #F3E6FF;
+    }
+
+    .call-button {
+      background-color: #CBA0FF;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .call-button:hover {
+      background-color: #A66BFF;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      color: #333;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Tamil Nadu Police Station Locator
+  </header>
+
+  <div class="container">
+    <h2>Find Police Stations Near You</h2>
+    <input type="text" id="searchInput" placeholder="Search for a city or town..." onkeyup="searchTable()">
+
+    <table id="policeTable">
+      <thead>
+        <tr>
+          <th>Location</th>
+          <th>Police Station</th>
+          <th>Contact Number</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 15 Major Cities -->
+        <tr><td>Chennai</td><td>Chennai Central Police Station</td><td>044-23452345</td><td><button class="call-button" onclick="call('044-23452345')">Call</button></td></tr>
+        <tr><td>Coimbatore</td><td>Race Course Police Station</td><td>0422-2233445</td><td><button class="call-button" onclick="call('0422-2233445')">Call</button></td></tr>
+        <tr><td>Madurai</td><td>SS Colony Police Station</td><td>0452-2678990</td><td><button class="call-button" onclick="call('0452-2678990')">Call</button></td></tr>
+        <tr><td>Tiruchirappalli</td><td>Cantonment Police Station</td><td>0431-2701100</td><td><button class="call-button" onclick="call('0431-2701100')">Call</button></td></tr>
+        <tr><td>Tirunelveli</td><td>Palayamkottai Police Station</td><td>0462-2564321</td><td><button class="call-button" onclick="call('0462-2564321')">Call</button></td></tr>
+        <tr><td>Salem</td><td>Fairlands Police Station</td><td>0427-2222234</td><td><button class="call-button" onclick="call('0427-2222234')">Call</button></td></tr>
+        <tr><td>Erode</td><td>Perundurai Police Station</td><td>0424-2356789</td><td><button class="call-button" onclick="call('0424-2356789')">Call</button></td></tr>
+        <tr><td>Vellore</td><td>Katpadi Police Station</td><td>0416-2255443</td><td><button class="call-button" onclick="call('0416-2255443')">Call</button></td></tr>
+        <tr><td>Thoothukudi</td><td>Harbour Police Station</td><td>0461-2345678</td><td><button class="call-button" onclick="call('0461-2345678')">Call</button></td></tr>
+        <tr><td>Thanjavur</td><td>Medical College Police Station</td><td>04362-272233</td><td><button class="call-button" onclick="call('04362-272233')">Call</button></td></tr>
+        <tr><td>Dindigul</td><td>Vadamadurai Police Station</td><td>0451-2445678</td><td><button class="call-button" onclick="call('0451-2445678')">Call</button></td></tr>
+        <tr><td>Nagercoil</td><td>Kottar Police Station</td><td>04652-232345</td><td><button class="call-button" onclick="call('04652-232345')">Call</button></td></tr>
+        <tr><td>Cuddalore</td><td>Town Police Station</td><td>04142-223344</td><td><button class="call-button" onclick="call('04142-223344')">Call</button></td></tr>
+        <tr><td>Villupuram</td><td>Main Town Police Station</td><td>04146-220011</td><td><button class="call-button" onclick="call('04146-220011')">Call</button></td></tr>
+        <tr><td>Pondicherry</td><td>White Town Police Station</td><td>0413-2334343</td><td><button class="call-button" onclick="call('0413-2334343')">Call</button></td></tr>
+
+        <!-- 35 Towns -->
+        <tr><td>Tiruvannamalai</td><td>Main Police Station</td><td>04175-222334</td><td><button class="call-button" onclick="call('04175-222334')">Call</button></td></tr>
+        <tr><td>Karur</td><td>Karur Town Police Station</td><td>04324-222876</td><td><button class="call-button" onclick="call('04324-222876')">Call</button></td></tr>
+        <tr><td>Kanchipuram</td><td>Ekambaranathar Police Station</td><td>044-27225252</td><td><button class="call-button" onclick="call('044-27225252')">Call</button></td></tr>
+        <tr><td>Namakkal</td><td>Namakkal Town Police Station</td><td>04286-222333</td><td><button class="call-button" onclick="call('04286-222333')">Call</button></td></tr>
+        <tr><td>Perambalur</td><td>Perambalur Central Police Station</td><td>04328-224455</td><td><button class="call-button" onclick="call('04328-224455')">Call</button></td></tr>
+        <tr><td>Ramanathapuram</td><td>Ramnad Town Police Station</td><td>04567-222999</td><td><button class="call-button" onclick="call('04567-222999')">Call</button></td></tr>
+        <tr><td>Kumbakonam</td><td>Kumbakonam East Police Station</td><td>0435-242100</td><td><button class="call-button" onclick="call('0435-242100')">Call</button></td></tr>
+        <tr><td>Kambam</td><td>Kambam Police Station</td><td>04554-222123</td><td><button class="call-button" onclick="call('04554-222123')">Call</button></td></tr>
+        <tr><td>Sivakasi</td><td>Sivakasi West Police Station</td><td>04562-222876</td><td><button class="call-button" onclick="call('04562-222876')">Call</button></td></tr>
+        <tr><td>Pollachi</td><td>Pollachi Main Police Station</td><td>04259-222333</td><td><button class="call-button" onclick="call('04259-222333')">Call</button></td></tr>
+        <tr><td>Tenkasi</td><td>Tenkasi Town Police Station</td><td>04633-222555</td><td><button class="call-button" onclick="call('04633-222555')">Call</button></td></tr>
+        <tr><td>Mayiladuthurai</td><td>Town Police Station</td><td>04364-223355</td><td><button class="call-button" onclick="call('04364-223355')">Call</button></td></tr>
+        <tr><td>Virudhunagar</td><td>Virudhunagar Police Station</td><td>04562-222789</td><td><button class="call-button" onclick="call('04562-222789')">Call</button></td></tr>
+        <tr><td>Arakkonam</td><td>Arakkonam Police Station</td><td>04177-222333</td><td><button class="call-button" onclick="call('04177-222333')">Call</button></td></tr>
+        <tr><td>Udumalpet</td><td>Udumalpet Town Police Station</td><td>04252-225666</td><td><button class="call-button" onclick="call('04252-225666')">Call</button></td></tr>
+        <tr><td>Thiruvallur</td><td>Thiruvallur Main Police Station</td><td>044-27663344</td><td><button class="call-button" onclick="call('044-27663344')">Call</button></td></tr>
+        <tr><td>Chidambaram</td><td>Chidambaram Town Police Station</td><td>04144-223312</td><td><button class="call-button" onclick="call('04144-223312')">Call</button></td></tr>
+        <tr><td>Dharmapuri</td><td>Dharmapuri Police Station</td><td>04342-222345</td><td><button class="call-button" onclick="call('04342-222345')">Call</button></td></tr>
+        <tr><td>Krishnagiri</td><td>Krishnagiri Town Police Station</td><td>04343-222788</td><td><button class="call-button" onclick="call('04343-222788')">Call</button></td></tr>
+        <tr><td>Pudukkottai</td><td>Pudukkottai Central Station</td><td>04322-220099</td><td><button class="call-button" onclick="call('04322-220099')">Call</button></td></tr>
+        <tr><td>Ambur</td><td>Ambur Town Police Station</td><td>04174-222300</td><td><button class="call-button" onclick="call('04174-222300')">Call</button></td></tr>
+        <tr><td>Theni</td><td>Theni Town Police Station</td><td>04546-222400</td><td><button class="call-button" onclick="call('04546-222400')">Call</button></td></tr>
+        <tr><td>Avadi</td><td>Avadi Police Station</td><td>044-26557788</td><td><button class="call-button" onclick="call('044-26557788')">Call</button></td></tr>
+        <tr><td>Tambaram</td><td>Tambaram Police Station</td><td>044-22344556</td><td><button class="call-button" onclick="call('044-22344556')">Call</button></td></tr>
+        <tr><td>Vaniyambadi</td><td>Vaniyambadi Police Station</td><td>04174-225566</td><td><button class="call-button" onclick="call('04174-225566')">Call</button></td></tr>
+        <tr><td>Arani</td><td>Arani Town Police Station</td><td>04173-223344</td><td><button class="call-button" onclick="call('04173-223344')">Call</button></td></tr>
+        <tr><td>Kodaikanal</td><td>Kodaikanal Hill Station Police</td><td>04542-240099</td><td><button class="call-button" onclick="call('04542-240099')">Call</button></td></tr>
+        <tr><td>Hosur</td><td>Hosur Police Station</td><td>04344-222888</td><td><button class="call-button" onclick="call('04344-222888')">Call</button></td></tr>
+        <tr><td>Gudiyatham</td><td>Gudiyatham Town Police Station</td><td>04171-222334</td><td><button class="call-button" onclick="call('04171-222334')">Call</button></td></tr>
+        <tr><td>Manapparai</td><td>Manapparai Police Station</td><td>04332-222399</td><td><button class="call-button" onclick="call('04332-222399')">Call</button></td></tr>
+        <tr><td>Tirupattur</td><td>Tirupattur Police Station</td><td>04179-223311</td><td><button class="call-button" onclick="call('04179-223311')">Call</button></td></tr>
+        <tr><td>Velankanni</td><td>Velankanni Police Station</td><td>04365-223390</td><td><button class="call-button" onclick="call('04365-223390')">Call</button></td></tr>
+        <tr><td>Pattukkottai</td><td>Pattukkottai Town Police</td><td>04373-224455</td><td><button class="call-button" onclick="call('04373-224455')">Call</button></td></tr>
+        <tr><td>Kovilpatti</td><td>Kovilpatti Police Station</td><td>04632-220022</td><td><button class="call-button" onclick="call('04632-220022')">Call</button></td></tr>
+        <tr><td>Thiruvaiyaru</td><td>Thiruvaiyaru Police Station</td><td>04362-222099</td><td><button class="call-button" onclick="call('04362-222099')">Call</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    © 2025 Safira | Women and Child Safety Initiative
+  </footer>
+
+  <script>
+    function searchTable() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#policeTable tbody tr");
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(input) ? "" : "none";
+      });
+    }
+
+    function call(number) {
+      alert("Calling " + number + "...");
+      // window.location.href = tel:${number}; (for mobile)
+    }
+  </script>
+</body>
+</html>

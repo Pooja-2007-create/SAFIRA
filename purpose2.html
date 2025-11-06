@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Safira – Women & Child Safety</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --lilac: #b57edc;
+      --lilac-dark: #a46cd6;
+      --accent: #945cc4;
+      --muted: #4a2e65;
+      --bg-light: #f9f5ff;
+    }
+
+    body {
+      background: var(--lilac);
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      max-width: 600px;
+      width: 100%;
+      padding: 24px;
+      overflow-y: auto;
+      max-height: 95vh;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      color: var(--lilac-dark);
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 6px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1.5px solid #e3c9f5;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--lilac-dark);
+      box-shadow: 0 0 8px rgba(164,108,214,0.4);
+    }
+
+    .btn {
+      background: var(--lilac-dark);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 14px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      width: 100%;
+      transition: 0.3s;
+    }
+
+    .btn:hover { background: var(--accent); }
+
+    .section-title {
+      margin-top: 20px;
+      font-family: 'Poppins', sans-serif;
+      color: var(--lilac-dark);
+      font-size: 1.1rem;
+    }
+
+    .hidden { display: none; }
+
+    .call-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .emergency-popup {
+      background: var(--bg-light);
+      border: 1px solid #e3c9f5;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 8px;
+      text-align: center;
+      display: none;
+    }
+
+    .emergency-popup a {
+      display: inline-block;
+      margin: 6px;
+      padding: 10px 16px;
+      background-color: var(--lilac-dark);
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .emergency-popup a:hover {
+      background-color: var(--accent);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Safira – Women & Child Safety</h1>
+
+    <form id="safetyForm" onsubmit="return handleSubmit(event)">
+      <label for="purpose">Select Purpose</label>
+      <select id="purpose" onchange="updateSections()" required>
+        <option value="">-- Choose a Purpose --</option>
+        <option value="childSafety">Child Safety (Parent's Side)</option>
+        <option value="harassment">Harassment or Threat</option>
+        <option value="other">Other Emergency Situation</option>
+        <option value="walking">Walking Alone at Night</option>
+        <option value="travelling">Travelling by Cab/Auto</option>
+      </select>
+
+      <!-- CHILD SAFETY -->
+      <div id="childSafety" class="hidden">
+        <div class="section-title">👶 Child Safety (Parent)</div>
+        <label>Child's Name</label>
+        <input type="text" id="childName" placeholder="Enter child's name">
+        <label>Child's Phone Number</label>
+        <input type="tel" id="childPhone" placeholder="10-digit number" pattern="[0-9]{10}">
+        <label>Child's Live Location</label>
+        <input type="url" id="childLocation" placeholder="Paste live location link (Google Maps)">
+      </div>
+
+      <!-- HARASSMENT -->
+      <div id="harassment" class="hidden">
+        <div class="section-title">🚨 Harassment / Threat Situation</div>
+        <label>Upload Photo or Evidence</label>
+        <input type="file" id="harassPhoto" accept="image/*">
+        <label>Harasser Details (optional)</label>
+        <textarea id="harassDetails" placeholder="Describe the harasser or situation"></textarea>
+      </div>
+
+      <!-- OTHER EMERGENCY -->
+      <div id="other" class="hidden">
+        <div class="section-title">⚠ Other Emergency</div>
+        <label>Your Name</label>
+        <input type="text" id="otherName" placeholder="Enter your name">
+        <label>Phone Number</label>
+        <input type="tel" id="otherPhone" placeholder="10-digit number" pattern="[0-9]{10}">
+        <label>Location</label>
+        <input type="text" id="otherLocation" placeholder="Enter your location">
+      </div>
+
+      <!-- WALKING ALONE -->
+      <div id="walking" class="hidden">
+        <div class="section-title">🚶 Walking Alone at Night</div>
+        <label>Emergency Contact 1</label>
+        <input type="tel" id="walkEmergency1" placeholder="10-digit number" pattern="[0-9]{10}">
+        <label>Emergency Contact 2</label>
+        <input type="tel" id="walkEmergency2" placeholder="10-digit number" pattern="[0-9]{10}">
+      </div>
+
+      <!-- TRAVELLING -->
+      <div id="travelling" class="hidden">
+        <div class="section-title">🚖 Travelling by Cab/Auto</div>
+        <label>Driver Name</label>
+        <input type="text" id="driverName" placeholder="Driver full name">
+        <label>Driver Phone</label>
+        <input type="tel" id="driverPhone" placeholder="10-digit number" pattern="[0-9]{10}">
+        <label>Cab/Auto Number</label>
+        <input type="text" id="cabNumber" placeholder="Vehicle number (e.g., TN09AB1234)">
+        <label>Emergency Contact 1</label>
+        <input type="tel" id="travelEmergency1" placeholder="10-digit number" pattern="[0-9]{10}">
+        <label>Emergency Contact 2</label>
+        <input type="tel" id="travelEmergency2" placeholder="10-digit number" pattern="[0-9]{10}">
+      </div>
+
+      <button type="submit" class="btn">Submit</button>
+
+      <div class="call-buttons">
+        <button type="button" class="btn" onclick="window.location.href='tel:100'">🚓 Call Police (100)</button>
+        <button type="button" class="btn" onclick="showEmergencyPopup()">📱 Call Emergency Contact</button>
+      </div>
+      <div id="emergencyPopup" class="emergency-popup"></div>
+
+      <footer>Powered by Safira 💜 – Stay Aware, Stay Safe</footer>
+    </form>
+  </div>
+
+  <script>
+    const sections = {
+      childSafety: document.getElementById('childSafety'),
+      harassment: document.getElementById('harassment'),
+      other: document.getElementById('other'),
+      walking: document.getElementById('walking'),
+      travelling: document.getElementById('travelling')
+    };
+
+    function hideAll() {
+      Object.values(sections).forEach(s => s.classList.add('hidden'));
+    }
+
+    function updateSections() {
+      hideAll();
+      const value = document.getElementById('purpose').value;
+      if (sections[value]) sections[value].classList.remove('hidden');
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      alert("✅ Details saved safely. In case of emergency, call Police (100) or use 'Call Emergency Contact'.");
+      return false;
+    }
+
+    function showEmergencyPopup() {
+      const purpose = document.getElementById('purpose').value;
+      const popup = document.getElementById('emergencyPopup');
+      popup.innerHTML = '';
+      let contacts = [];
+
+      if (purpose === 'walking') {
+        contacts.push(document.getElementById('walkEmergency1').value);
+        contacts.push(document.getElementById('walkEmergency2').value);
+      } else if (purpose === 'travelling') {
+        contacts.push(document.getElementById('travelEmergency1').value);
+        contacts.push(document.getElementById('travelEmergency2').value);
+      } else {
+        contacts.push(document.getElementById('otherPhone').value);
+      }
+
+      contacts = contacts.filter(num => num.trim() !== '');
+      if (contacts.length === 0) {
+        alert('⚠ Please enter at least one emergency contact first.');
+        return;
+      }
+
+      popup.innerHTML = '<strong>Select an emergency contact to call:</strong><br>';
+      contacts.forEach(num => {
+        const link = document.createElement('a');
+        link.href = `tel:${num}`;
+        link.textContent = `📞 ${num}`;
+        popup.appendChild(link);
+      });
+      popup.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safira - Women's Safety App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f3e8ff, #ede4f9);
+            min-height: 100vh;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #fff;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 8px;
+            color: #6a3ea1;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab:hover {
+            background: #f5e9ff;
+        }
+
+        .nav-tab.active {
+            background: #6a3ea1;
+            color: white;
+        }
+
+        .content-container {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        iframe {
+            width: 100%;
+            height: calc(100vh - 100px);
+            border: none;
+            border-radius: 15px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-tabs">
+        <div class="nav-tab active" data-page="login">Login</div>
+        <div class="nav-tab" data-page="purpose">Purpose</div>
+        <div class="nav-tab" data-page="location">Location</div>
+        <div class="nav-tab" data-page="safira">Chat</div>
+        <div class="nav-tab" data-page="police">Police</div>
+        <div class="nav-tab" data-page="privacy">Privacy</div>
+    </nav>
+
+    <div class="content-container">
+        <div class="page-content active" id="login">
+            <iframe src="login.html"></iframe>
+        </div>
+        <div class="page-content" id="purpose">
+            <iframe src="purpose.html"></iframe>
+        </div>
+        <div class="page-content" id="location">
+            <iframe src="location.html"></iframe>
+        </div>
+        <div class="page-content" id="safira">
+            <iframe src="safira.html"></iframe>
+        </div>
+        <div class="page-content" id="police">
+            <iframe src="police.html"></iframe>
+        </div>
+        <div class="page-content" id="privacy">
+            <iframe src="privacy.html"></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.page-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.page).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Safira — Emergency Chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: linear-gradient(135deg,#fff0fb,#f3e8ff);
+      --card:#fff;
+      --accent:#7b3ed0;
+      --accent-2:#ff5b9a;
+      --muted:#8b6bc7;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:var(--bg);
+      color:#2b2440;
+      display:flex;
+      min-height:100vh;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .app {
+      width:100%;
+      max-width:920px;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:20px;
+      align-items:start;
+    }
+
+    @media (max-width:900px){
+      .app{grid-template-columns:1fr; padding-bottom:50px}
+    }
+
+    .left {
+      background:var(--card);
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 6px 30px rgba(120,80,200,0.12);
+    }
+
+    .header {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:12px;
+    }
+
+    .logo {
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),#b479ff);
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;
+      box-shadow:0 8px 18px rgba(123,62,208,0.15);
+    }
+
+    h1{font-size:18px;margin:0}
+    p.lead{color:var(--muted);margin:2px 0 0;font-size:13px}
+
+    /* chat area */
+    .chat {
+      height:520px;
+      border-radius:12px;
+      margin-top:14px;
+      padding:14px;
+      background:linear-gradient(180deg,#fbf7ff, #fff);
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid rgba(120,80,200,0.05);
+    }
+
+    .bubble {
+      max-width:78%;
+      padding:10px 12px;
+      border-radius:12px;
+      font-size:14px;
+      line-height:1.3;
+    }
+
+    .bot {
+      background: #f1e9ff;
+      border:1px solid rgba(123,62,208,0.06);
+      color:#3d2a57;
+      align-self:flex-start;
+    }
+
+    .user {
+      background:linear-gradient(90deg,#b79ced, #9e7be9);
+      color:white;
+      align-self:flex-end;
+      border-radius:12px 12px 8px 12px;
+    }
+
+    .controls {
+      display:flex;gap:8px;margin-top:10px;align-items:center;
+    }
+
+    .input {
+      flex:1;
+      display:flex;
+      gap:8px;
+    }
+
+    .input input[type="text"]{
+      width:100%;
+      padding:10px 12px;border-radius:10px;border:1px solid #eee;
+      outline:none;font-size:14px;
+      background:linear-gradient(180deg,#fff,#fbf7ff);
+    }
+
+    .btn {
+      background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600;
+      box-shadow:0 6px 18px rgba(123,62,208,0.12);
+    }
+    .btn.secondary{background:#7ac7a6;color:white;box-shadow:0 6px 18px rgba(122,199,166,0.12)}
+    .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--accent)}
+
+    
+    .right {
+      background:var(--card);
+      border-radius:16px;
+      padding:16px;
+      box-shadow:0 6px 30px rgba(120,80,200,0.08);
+      height:fit-content;
+    }
+
+    .right h3{margin:0 0 8px 0}
+    .meta {font-size:13px;color:var(--muted);margin-bottom:10px}
+
+    .summary {
+      margin-top:8px;padding:10px;border-radius:10px;background:#fbf7ff;color:#3d2a57;font-size:14px;
+      min-height:120px;
+    }
+
+    .quick {
+      display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;
+    }
+
+    .chip {background:#fff;border:1px solid rgba(123,62,208,0.08);padding:8px 10px;border-radius:999px;font-weight:600;color:var(--accent);cursor:pointer}
+
+    .send-alert {margin-top:14px;display:flex;gap:8px}
+
+    .small {font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Safira emergency chat">
+    <div class="left">
+      <div class="header">
+        <div class="logo">SG</div>
+        <div>
+          <h1>Safira — Emergency Chat</h1>
+          <p class="lead">Answer a few quick questions — we’ll prepare an alert for your guardians.</p>
+        </div>
+      </div>
+
+      <div id="chat" class="chat" aria-live="polite"></div>
+
+      <div class="controls" aria-hidden="false">
+        <div class="input">
+          <input id="textInput" type="text" placeholder="Type your reply or choose a quick option..." autocomplete="off" />
+        </div>
+        <button id="sendBtn" class="btn">Send</button>
+      </div>
+    </div>
+
+    <aside class="right" aria-label="Summary panel">
+      <h3>Summary</h3>
+      <div class="meta small">Collected info so far</div>
+      <div id="summary" class="summary">No answers yet.</div>
+
+      <div class="meta small">Quick replies</div>
+      <div class="quick" id="quickReplies"></div>
+
+      <div class="send-alert">
+    <button id="saveBtn" class="btn ghost">Save Conversation</button>
+    <button id="alertBtn" class="btn secondary">Send Alert (simulate)</button>
+    <button id="newBtn" class="btn ghost">New Conversation</button>
+</div>
+      <div style="margin-top:12px" class="small">Tip: The chat reads the last-known location saved by the Location page (if available).</div>
+    </aside>
+  </div>
+
+  <script>
+    
+    const chatEl = document.getElementById('chat');
+    const inputEl = document.getElementById('textInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const summaryEl = document.getElementById('summary');
+    const quickEl = document.getElementById('quickReplies');
+    const alertBtn = document.getElementById('alertBtn');
+    const saveBtn = document.getElementById('saveBtn');
+
+    
+   
+const questions = [
+    { key: 'name', text: 'What is your name?' },
+    { key: 'emergency', text: 'What type of emergency is this?', quick: ['Harassment', 'Feeling Unsafe', 'Travelling Alone', 'Injury'] },
+];
+
+
+const followUpQuestions = {
+    'Harassment': [
+        { key: 'harasser', text: 'Is the harasser still nearby?', quick: ['Yes', 'No', 'Not Sure'] },
+        { key: 'safe', text: 'Are you in a safe place right now?', quick: ['Yes', 'No'] },
+        { key: 'help', text: 'Is there anyone around who can help?', quick: ['Yes', 'No', 'Not Sure'] }
+    ],
+    'Feeling Unsafe': [
+        { key: 'reason', text: 'What makes you feel unsafe?', quick: ['Being Followed', 'Suspicious Person', 'Dark Area', 'Other'] },
+        { key: 'alone', text: 'Are you alone?', quick: ['Yes', 'No'] },
+        { key: 'safe_space', text: 'Is there a safe space nearby? (shop/police station/crowd)', quick: ['Yes', 'No', 'Not Sure'] }
+    ],
+    'Travelling Alone': [
+        { key: 'transport', text: 'What mode of transport are you using?', quick: ['Walking', 'Public Transport', 'Cab/Taxi', 'Other'] },
+        { key: 'destination', text: 'How far are you from your destination?', quick: ['Nearly There', '15-30 mins', '30+ mins'] },
+        { key: 'company', text: 'Would you like someone to stay on call with you?', quick: ['Yes', 'No'] }
+    ],
+    'Injury': [
+        { key: 'injury_type', text: 'What type of injury is it?', quick: ['Fall', 'Attack', 'Medical', 'Other'] },
+        { key: 'severity', text: 'How severe is the injury?', quick: ['Minor', 'Moderate', 'Severe'] },
+        { key: 'conscious', text: 'Is the injured person conscious?', quick: ['Yes', 'No', 'Semi-conscious'] }
+    ]
+};
+
+    let state = {
+      answers: {},
+      step: 0,
+      lastLocation: null
+    };
+
+    const saved = localStorage.getItem('safira_chat_conversation_v1');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        state = {...state, ...parsed};
+      } catch(e){}
+    }
+    try {
+      const loc = localStorage.getItem('safira_last_location');
+      if (loc) state.lastLocation = JSON.parse(loc);
+    } catch(e){}
+
+    
+    function appendBubble(text, who='bot') {
+      const b = document.createElement('div');
+      b.className = 'bubble ' + (who==='bot' ? 'bot' : 'user');
+      b.textContent = text;
+      chatEl.appendChild(b);
+      chatEl.scrollTop = chatEl.scrollHeight;
+    }
+    function setQuick(arr){
+      quickEl.innerHTML = '';
+      if (!arr || !arr.length) return;
+      arr.forEach(q=>{
+        const c = document.createElement('button');
+        c.className = 'chip';
+        c.textContent = q;
+        c.onclick = ()=> handleUserInput(q);
+        quickEl.appendChild(c);
+      });
+    }
+    function updateSummary(){
+      const lines = [];
+      for (const q of questions) {
+        if (state.answers[q.key]) {
+          lines.push('<strong>' + q.text + '</strong><br>' + (state.answers[q.key]));
+        }
+      }
+      if (state.lastLocation && state.answers['locationConfirm'] && state.answers['locationConfirm'].toLowerCase().startsWith('yes')) {
+        const l = state.lastLocation;
+        lines.push('<strong>Location included:</strong><br>Lat: ' + l.lat.toFixed(6) + ', Lng: ' + l.lng.toFixed(6) + ' (±' + Math.round(l.accuracy) + 'm)');
+      }
+      summaryEl.innerHTML = lines.length ? lines.join('<hr style="opacity:.06;margin:8px 0">') : 'No answers yet.';
+    }
+    function askCurrent() {
+      if (state.step >= questions.length) {
+        appendBubble('Thanks — I have everything I need. Review the summary and press "Send Alert" when ready.', 'bot');
+        setQuick([]);
+        updateSummary();
+        saveConversation();
+        return;
+      }
+      const q = questions[state.step];
+      appendBubble(q.text, 'bot');
+      setQuick(q.quick || []);
+      updateSummary();
+      saveConversation();
+    }
+    function handleUserInput(text) {
+    if (!text || !text.trim()) return;
+    appendBubble(text, 'user');
+    const q = questions[state.step];
+    
+    if (q && q.key === 'emergency') {
+        state.answers[q.key] = text;
+        state.emergencyType = text;
+        // Clear any existing follow-up questions
+        questions.length = 2;
+        // Add follow-up questions based on emergency type
+        if (followUpQuestions[text]) {
+            // Add the follow-up questions specific to this emergency type
+            questions.push(...followUpQuestions[text]);
+            // Add location and additional info questions at the end
+            questions.push(
+                { key: 'locationConfirm', text: 'We can include your last known location if available. Include it?', quick: ['Yes, include', 'No'] },
+                { key: 'additional', text: 'Any short details to add? (e.g., description, nearby landmark)' }
+            );
+        }
+        state.step++;
+    } else if (q && q.key === 'locationConfirm') {
+        state.answers[q.key] = text;
+        if (text.toLowerCase().startsWith('yes') && state.lastLocation) {
+        }
+        state.step++;
+    } else if (q) {
+        state.answers[q.key] = text;
+        state.step++;
+    } else {
+        state.answers['additional'] = (state.answers['additional'] ? (state.answers['additional'] + ' / ') : '') + text;
+    }
+
+    inputEl.value = '';
+    setQuick([]);
+    saveConversation();
+    setTimeout(() => askCurrent(), 300);
+}
+    sendBtn.addEventListener('click', ()=> {
+      const v = inputEl.value.trim();
+      if (!v) return;
+      handleUserInput(v);
+    });
+
+    inputEl.addEventListener('keydown', (e)=> {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendBtn.click();
+      }
+    });
+    function startConversation() {
+      appendBubble('Hi — I am Safira- Your Safety Companion. I will ask a few quick questions so we can alert your guardians if needed.', 'bot');
+      if (state.lastLocation) {
+        appendBubble('I detected a saved location from the Location page. I will ask whether you want to include it.', 'bot');
+      } else {
+        appendBubble('No saved location detected. If you want, you can paste coordinates or reopen the Location page to capture your location first.', 'bot');
+      }
+      
+      askCurrent();
+    }
+
+    
+    function saveConversation(){
+      const copy = {...state};
+      localStorage.setItem('safira_chat_conversation_v1', JSON.stringify(copy));
+    }
+
+
+    alertBtn.addEventListener('click', ()=> {
+      const payload = {
+        timestamp: new Date().toISOString(),
+        answers: state.answers,
+        location: (state.lastLocation && state.answers['locationConfirm'] && state.answers['locationConfirm'].toLowerCase().startsWith('yes')) ? state.lastLocation : null
+      };
+
+      console.log('SIMULATED ALERT PAYLOAD', payload);
+      showMessage('🚨 Alert simulated: payload printed to console. Integrate server-side to actually send SMS / calls.');
+      
+    });
+
+    saveBtn.addEventListener('click', ()=> {
+      saveConversation();
+      showMessage('Conversation saved locally.');
+    });
+
+    function showMessage(msg){
+      appendBubble(msg,'bot');
+    }
+
+    
+    (function restoreBubbles(){
+      const conv = localStorage.getItem('safira_chat_conversation_v1');
+      if (!conv) return startConversation();
+      try {
+        const obj = JSON.parse(conv);
+        if (obj && obj.answers) {
+          state = {...state, ...obj};
+          appendBubble('Resuming saved conversation...', 'bot');
+          updateSummary();
+          askCurrent();
+        } else { startConversation(); }
+      } catch(e) { startConversation(); }
+    })();
+function resetConversation() {
+    // Reset questions to initial state
+    questions.length = 2; // Keep only name and emergency type questions
+    
+    state = {
+        answers: {},
+        step: 0,
+        lastLocation: state.lastLocation,
+        emergencyType: null
+    };
+    chatEl.innerHTML = '';
+    summaryEl.innerHTML = 'No answers yet.';
+    inputEl.value = '';
+    localStorage.removeItem('safira_chat_conversation_v1');
+    startConversation();
+}
+
+
+const newBtn = document.getElementById('newBtn');
+newBtn.addEventListener('click', () => {
+    resetConversation();
+    showMessage('Starting new conversation...');
+});
+  </script>
+</body>
+</html>

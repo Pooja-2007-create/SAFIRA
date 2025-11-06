@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safira – Choose Your Purpose</title>
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, #c8a2c8, #e6d6f5); /* Lilac gradient */
+        min-height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        background: white;
+        width: 90%;
+        max-width: 700px;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    h1 {
+        color: #7b3fa0; /* Deep lilac */
+        margin-bottom: 20px;
+        font-size: 28px;
+    }
+
+    p {
+        color: #555;
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+
+    .options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .option {
+        background: #f7efff;
+        border: 2px solid transparent;
+        border-radius: 12px;
+        padding: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        color: #4b3f63;
+        transition: 0.3s;
+    }
+
+    .option:hover {
+        background: #e5d4f7;
+    }
+
+    .option.active {
+        border: 2px solid #7b3fa0;
+        background: #ede1fa;
+        color: #7b3fa0;
+    }
+
+    .result {
+        margin-top: 25px;
+        font-size: 16px;
+        background: #f9f4ff;
+        padding: 15px;
+        border-radius: 10px;
+        color: #444;
+        display: none;
+        border-left: 4px solid #7b3fa0;
+        text-align: left;
+    }
+
+    .footer {
+        margin-top: 25px;
+        font-size: 14px;
+        color: #7b3fa0;
+        font-weight: 500;
+    }
+
+    @media(max-width:600px) {
+        .options {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Choose Your Purpose</h1>
+    <p>Select the situation that best matches your concern or travel condition.</p>
+
+    <div class="options">
+        <div class="option" onclick="showPurpose('alone', event)">🚶 Travelling Alone</div>
+        <div class="option" onclick="showPurpose('child', event)">👧 Child Safety</div>
+        <div class="option" onclick="showPurpose('cab', event)">🚕 Insecure in Cab</div>
+        <div class="option" onclick="showPurpose('harass', event)">🚨 Harassment or Threat</div>
+        <div class="option" onclick="showPurpose('other', event)">🌐 Other Situations</div>
+    </div>
+
+    <div class="result" id="resultBox"></div>
+
+    <div class="footer">Safira – Smart Safety Companion for Women 💜</div>
+</div>
+
+<script>
+    function showPurpose(purpose, event) {
+        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('active'));
+        event.target.classList.add('active');
+
+        let text = '';
+        if (purpose === 'alone') {
+            text = 'Travelling alone can be unpredictable. Safira ensures that your live location and safety alerts reach your trusted contacts instantly if you feel unsafe.';
+        } else if (purpose === 'child') {
+            text = 'Child safety matters most. Safira helps parents track and receive instant alerts if their child is in danger or needs help.';
+        } else if (purpose === 'cab') {
+            text = 'Feeling insecure in a cab or ride? Safira shares your live location and cab details with trusted contacts instantly.';
+        } else if (purpose === 'harass') {
+            text = 'In situations of harassment or stalking, Safira provides an SOS alert and fake call option for immediate safety.';
+        } else {
+            text = 'For other unsafe conditions like medical emergencies or getting lost, Safira ensures you stay connected and protected.';
+        }
+
+        const box = document.getElementById('resultBox');
+        box.innerHTML = <strong>Selected Purpose:</strong> ;{text};
+        box.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>

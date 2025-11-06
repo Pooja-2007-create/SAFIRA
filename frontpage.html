@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Safira - Women Safety App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    /* Navigation bar */
+    nav {
+      background: linear-gradient(90deg, #d896ff, #7b2cbf); /* bright lilac to purple */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Enhanced logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      background: radial-gradient(circle at 30% 30%, #ffffff, #e6ccff);
+      color: #7b2cbf;
+      border-radius: 50%;
+      padding: 10px 16px;
+      margin-right: 12px;
+      font-weight: 800;
+      font-size: 22px;
+      box-shadow: 0 4px 10px rgba(123, 44, 191, 0.3);
+      border: 2px solid white;
+      transition: transform 0.3s ease;
+    }
+
+    .logo span:hover {
+      transform: rotate(10deg) scale(1.05);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #f3e6ff;
+    }
+
+    /* Page content */
+    section {
+      display: none;
+      padding: 40px 20px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    section.active {
+      display: block;
+    }
+
+    .home {
+      text-align: center;
+    }
+
+    .home h1 {
+      color: #7b2cbf;
+      font-size: 2.7rem;
+      margin-bottom: 10px;
+    }
+
+    .home p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .features {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      padding: 24px;
+      width: 250px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 18px rgba(123, 44, 191, 0.2);
+    }
+
+    footer {
+      background: linear-gradient(90deg, #7b2cbf, #d896ff);
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin: 8px 0;
+      font-size: 15px;
+    }
+
+    button {
+      background: linear-gradient(90deg, #7b2cbf, #d896ff);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #6822a5, #c36bff);
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Home Page -->
+  <section id="home" class="home active">
+    <h1>Welcome to Safira</h1>
+    <p><b>Safira</b> is a women’s safety app built to empower and protect women through quick access to trusted contacts, nearby police, and instant SOS alerts. Feel safe, always.</p>
+
+    <div class="features">
+      <div class="feature-card">
+        <h3>🔔 Emergency Alert</h3>
+        <p>Send instant SOS messages with your live location to emergency contacts.</p>
+      </div>
+      <div class="feature-card">
+        <h3>📍 Live Tracking</h3>
+        <p>Share your real-time location with trusted people for peace of mind.</p>
+      </div>
+      <div class="feature-card">
+        <h3>💬 Chatbot Assistance</h3>
+        <p>Get safety guidance and instant support through our AI-powered chatbot.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🚓 Police Connect</h3>
+        <p>Find and contact your nearest police station instantly in emergencies.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy Page -->
+  <section id="privacy">
+    <h2>Privacy Policy</h2>
+    <p>Your privacy is our top priority. Safira ensures that all your personal and location data is encrypted and never shared without your consent.</p>
+    <p>We collect only necessary data for your safety and comply with global privacy standards.</p>
+  </section>
+
+  <!-- Login Page -->
+  <section id="login">
+    <h2>Login</h2>
+    <form>
+      <label>Email:</label>
+      <input type="email" placeholder="Enter your email" required>
+      <label>Password:</label>
+      <input type="password" placeholder="Enter your password" required>
+      <button type="submit">Login</button>
+    </form>
+  </section>
+
+  <!-- Purpose Page -->
+  <section id="purpose">
+    <h2>Choose Your Purpose</h2>
+    <p>Select your reason for using Safira:</p>
+    <select>
+      <option>Personal Safety</option>
+      <option>Community Watch</option>
+      <option>Volunteer Support</option>
+    </select>
+    <button>Continue</button>
+  </section>
+
+  <!-- Location Page -->
+  <section id="location">
+    <h2>Share Location</h2>
+    <p>Enable location to receive nearby alerts and assistance instantly.</p>
+    <button onclick="alert('Location access granted!')">Enable Location</button>
+  </section>
+
+  <!-- Police Number Page -->
+  <section id="police">
+    <h2>Police Contact</h2>
+    <p>Save your nearest police station’s number below:</p>
+    <input type="text" placeholder="Enter police number">
+    <button>Save</button>
+  </section>
+
+  <!-- Chatbot Page -->
+  <section id="chatbot">
+    <h2>Safira Chatbot</h2>
+    <p>Ask for safety tips or help below:</p>
+    <textarea placeholder="Type your message..."></textarea>
+    <button>Send</button>
+  </section>
+
+  <footer>
+    <p>© 2025 Safira | Empowering Women’s Safety Everywhere</p>
+  </footer>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+  </script>
+</body>
+</html>

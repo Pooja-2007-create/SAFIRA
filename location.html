@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safira – Location & Emergency</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f3e8ff, #ede4f9);
+            color: #4b3869;
+            text-align: center;
+            padding: 30px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #6a3ea1;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #8a6bc7;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        #map-container {
+            background: #ffffffee;
+            border: 2px solid #d7c5f9;
+            border-radius: 20px;
+            padding: 15px;
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 25px;
+            box-shadow: 0 8px 20px rgba(150, 100, 255, 0.2);
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 15px;
+            z-index: 1;
+        }
+
+        #location-box {
+            background: #ffffffee;
+            border: 2px solid #d7c5f9;
+            border-radius: 20px;
+            padding: 25px;
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 25px;
+            box-shadow: 0 8px 20px rgba(150, 100, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        #location-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .location-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .location-detail {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            justify-content: center;
+        }
+
+        #getLocationBtn {
+            background-color: #b79ced;
+            color: white;
+        }
+
+        #getLocationBtn:hover {
+            background-color: #9e7be9;
+            box-shadow: 0 4px 12px rgba(150, 100, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        #trackingBtn {
+            background-color: #7ac7a6;
+            color: white;
+        }
+
+        #trackingBtn:hover {
+            background-color: #5ab189;
+            box-shadow: 0 4px 12px rgba(90, 177, 137, 0.4);
+            transform: translateY(-2px);
+        }
+
+        #sosBtn {
+            background-color: #e056fd;
+            color: white;
+        }
+
+        #sosBtn:hover {
+            background-color: #d42ef5;
+            box-shadow: 0 4px 12px rgba(208, 80, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        #message {
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #5a3e85;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            max-width: 800px;
+            opacity: 0;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            color: #7f6ab7;
+            font-size: 0.9rem;
+        }
+
+        .tracking-active {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+       
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            #map {
+                height: 300px;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px 20px;
+            }
+
+            .location-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🌸 Safira – Your Safety Companion</h1>
+    <p class="subtitle">Track your location and alert your guardians instantly</p>
+
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+    <div id="location-box">
+        <h2>📍 Location Details</h2>
+        <div class="location-details">
+            <p class="location-detail" id="latitude">Latitude: --</p>
+            <p class="location-detail" id="longitude">Longitude: --</p>
+            <p class="location-detail" id="accuracy">Accuracy: --</p>
+            <p class="location-detail" id="lastUpdate">Last Updated: --</p>
+        </div>
+    </div>
+
+    <div class="buttons-container">
+        <button id="getLocationBtn">📍 Get My Location</button>
+        <button id="trackingBtn">🔄 Start Tracking</button>
+        <button id="sosBtn">🚨 Emergency Alert</button>
+    </div>
+
+    <p id="message"></p>
+
+    <footer>© 2025 Safira | Your Safety is Our Priority 💜</footer>
+
+    <script>
+        let map;
+        let marker;
+        let circle;
+        let watchId = null;
+        let isTracking = false;
+
+        function initMap() {
+            map = L.map('map').setView([0, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+        window.onload = initMap;
+
+        const getLocationBtn = document.getElementById("getLocationBtn");
+        const trackingBtn = document.getElementById("trackingBtn");
+        const sosBtn = document.getElementById("sosBtn");
+        const message = document.getElementById("message");
+
+        function showMessage(text, isSuccess = true) {
+            message.textContent = text;
+            message.style.opacity = "1";
+            message.style.backgroundColor = isSuccess ? "rgba(220, 255, 220, 0.9)" : "rgba(255, 220, 220, 0.9)";
+            message.style.color = isSuccess ? "#2f855a" : "#c53030";
+            setTimeout(() => message.style.opacity = "0", 5000);
+        }
+
+        function updateMap(position) {
+            const pos = [position.coords.latitude, position.coords.longitude];
+            map.setView(pos, 15);
+            if (!marker) {
+                marker = L.marker(pos).addTo(map);
+            } else {
+                marker.setLatLng(pos);
+            }
+             
+            if (circle) {
+                circle.remove();
+            }
+            circle = L.circle(pos, {
+                radius: position.coords.accuracy,
+                color: '#9e7be9',
+                fillColor: '#b79ced',
+                fillOpacity: 0.1
+            }).addTo(map);
+        }
+
+        function showPosition(position) {
+            document.getElementById("latitude").textContent = "Latitude: " + position.coords.latitude.toFixed(6);
+            document.getElementById("longitude").textContent = "Longitude: " + position.coords.longitude.toFixed(6);
+            document.getElementById("accuracy").textContent = "Accuracy: ±" + Math.round(position.coords.accuracy) + " meters";
+            document.getElementById("lastUpdate").textContent = "Last Updated: " + new Date().toLocaleTimeString();
+            
+            updateMap(position);
+            showMessage("✅ Location updated successfully!");
+        }
+
+        function showError(error) {
+            let errorMessage = "⚠️ ";
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage += "Please allow location access to use this feature.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage += "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    errorMessage += "Location request timed out.";
+                    break;
+                default:
+                    errorMessage += "An unknown error occurred.";
+            }
+            showMessage(errorMessage, false);
+        }
+
+        getLocationBtn.addEventListener("click", () => {
+            if (navigator.geolocation) {
+                getLocationBtn.disabled = true;
+                getLocationBtn.style.opacity = "0.7";
+                showMessage("📍 Getting your location...");
+                
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        showPosition(position);
+                        getLocationBtn.disabled = false;
+                        getLocationBtn.style.opacity = "1";
+                    },
+                    (error) => {
+                        showError(error);
+                        getLocationBtn.disabled = false;
+                        getLocationBtn.style.opacity = "1";
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                showMessage("⚠️ Geolocation is not supported by this browser.", false);
+            }
+        });
+
+        trackingBtn.addEventListener("click", () => {
+            if (!isTracking) {
+                if (navigator.geolocation) {
+                    watchId = navigator.geolocation.watchPosition(showPosition, showError, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    });
+                    isTracking = true;
+                    trackingBtn.textContent = "🔄 Stop Tracking";
+                    trackingBtn.classList.add("tracking-active");
+                    showMessage("✅ Live tracking started");
+                }
+            } else {
+                navigator.geolocation.clearWatch(watchId);
+                isTracking = false;
+                trackingBtn.textContent = "🔄 Start Tracking";
+                trackingBtn.classList.remove("tracking-active");
+                showMessage("Tracking stopped");
+            }
+        });
+
+        sosBtn.addEventListener("click", () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const location = `${position.coords.latitude},${position.coords.longitude}`;
+                        showMessage("🚨 Emergency alert sent with your current location!");
+                        sosBtn.style.backgroundColor = "#ff4dc3";
+                        setTimeout(() => {
+                            sosBtn.style.backgroundColor = "#e056fd";
+                        }, 1000);
+                    },
+                    () => {
+                        showMessage("🚨 Emergency alert sent! (Location unavailable)", false);
+                    }
+                );
+            } else {
+                showMessage("🚨 Emergency alert sent! (Location unavailable)", false);
+            }
+        });
+    </script>
+</body>
+</html>
